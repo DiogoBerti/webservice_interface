@@ -14,15 +14,30 @@
 	<p>{{welcomeMessage}}</p>
 
 	<div id="users">
-		{{#each results_to_show}}
-		<div style="background-color:lightblue">
+		<div class="row">
+			
+			{{#each results_to_show}}
+		<!-- <div style="background-color:lightblue">
 			<h3>{{login}}</h3>
 			<p>{{name}}</p>
+		</div>-->
+		<div class="col-sm-4">
+			<div class="card">
+				<div class="card-header">
+					{{login}}
+				</div>
+				<div class="card-body">
+					<h3 class="card-title">Login</h3>
+					<p class="card-subtitle mb-2 text-muted">{{name}}</p>
+				</div>
+			</div>
 		</div>
 		{{/each}}
-	</div>
 
-	<!-- Injetando um partial, definido dentro de views/partials -->
-	{{> footer}}
+	</div>
+</div>
+
+<!-- Injetando um partial, definido dentro de views/partials -->
+{{> footer}}
 </body>
 </html>

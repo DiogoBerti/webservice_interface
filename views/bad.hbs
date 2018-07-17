@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{{> imports}}
+		<title>Home Page</title>
+	</head>
+	
+	<body>
+		<!-- Utilizando as chaves como templates, utilizando valores enviados pelo Node -->
+		<!-- Renderizando via partials.. -->
+		{{> header1}}
+		<br/>
+		<!-- Chamando o helper screamIt e passando welcomeMessage como argumento.. -->
+		<p>{{errorMessage}}</p>
+		
+		<!-- Injetando um partial, definido dentro de views/partials -->
+		{{> footer}}
+	</body>
+</html>

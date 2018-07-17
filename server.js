@@ -4,6 +4,7 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
+const Odoo = require('odoo-xmlrpc');
 
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
@@ -22,8 +23,56 @@ app.get('/login', (req, res) => {
 
 app.post('/login/submit', function(req, res){
    console.log(req.body);
-   res.redirect('/home');
- });
+   let vals = req.body;
+
+   let odoo = new Odoo({
+	    url: `http://${vals.urlOdoo}`,
+	    port: '8069',
+	    db: vals.bdOdoo,
+	    username: vals.userLogin,
+	    password: vals.userPassword
+   });
+
+   odoo.connect(function (err) {
+	    if (err) { 
+	    	res.redirect('/bad');
+	    	return console.log(err);
+	    }
+	    console.log('Connected to Odoo server.');
+
+	    let inParams = [];
+
+	    inParams.push([]);
+	    // inParams.push(0);  //offset
+	    // inParams.push(10);  //Limit
+	    let params = [];
+	    params.push(inParams);
+	    odoo.execute_kw('res.users', 'search', params, function (err, value) {
+	        
+	        if (err) { 
+	        	return console.log(err);
+	        }
+	        let inParams = [];
+	        inParams.push(value); //ids
+	        inParams.push(['name', 'login']); //fields
+	        let params = [];
+	        params.push(inParams);
+	        odoo.execute_kw('res.users', 'read', params, function (err2, value2) {
+	            if (err2) { 
+	            	return console.log(err2);
+	            }
+	            let results = value2;
+	            res.render('home.hbs',{
+				welcomeMessage: "Bem vindo ao Webservice interface",
+				results_to_show: results
+				});
+	    	});
+	    	// res.redirect('/home',results);
+	    	
+	    });
+	});
+});
+
 
 app.get('/home', (req, res) => {
 	res.render('home.hbs',{
@@ -31,7 +80,11 @@ app.get('/home', (req, res) => {
 	})
 });
 
-
+app.get('/bad', (req, res) => {
+	res.render('bad.hbs',{
+		errorMessage: "Conexão não foi completa...."
+	})
+});
 
 
 

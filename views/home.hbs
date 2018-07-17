@@ -1,19 +1,28 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		{{> imports}}
-		<title>Home Page</title>
-	</head>
-	
-	<body>
-		<!-- Utilizando as chaves como templates, utilizando valores enviados pelo Node -->
-		<!-- Renderizando via partials.. -->
-		{{> header1}}
-		<br/>
-		<!-- Chamando o helper screamIt e passando welcomeMessage como argumento.. -->
-		<p>{{welcomeMessage}}</p>
-		
-		<!-- Injetando um partial, definido dentro de views/partials -->
-		{{> footer}}
-	</body>
+<head>
+	{{> imports}}
+	<title>Home Page</title>
+</head>
+
+<body>
+	<!-- Utilizando as chaves como templates, utilizando valores enviados pelo Node -->
+	<!-- Renderizando via partials.. -->
+	{{> header1}}
+	<br/>
+	<!-- Chamando o helper screamIt e passando welcomeMessage como argumento.. -->
+	<p>{{welcomeMessage}}</p>
+
+	<div id="users">
+		{{#each results_to_show}}
+		<div style="background-color:lightblue">
+			<h3>{{login}}</h3>
+			<p>{{name}}</p>
+		</div>
+		{{/each}}
+	</div>
+
+	<!-- Injetando um partial, definido dentro de views/partials -->
+	{{> footer}}
+</body>
 </html>

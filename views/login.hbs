@@ -27,7 +27,6 @@
     }
 </style>
 </head>
-
 <body>
 	{{> header1}}
 	<br/>
@@ -59,5 +58,26 @@
 		</form>
 	</div>
 	{{> footer}}
+	<script type="text/javascript">
+		function getUrlVars()
+		{
+		    var vars = [], hash;
+		    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+		    for(var i = 0; i < hashes.length; i++)
+		    {
+		        hash = hashes[i].split('=');
+		        vars.push(hash[0]);
+		        vars[hash[0]] = hash[1];
+		    }
+		    return vars;
+		}
+
+		$( document ).ready(function() {
+    		errors = getUrlVars();
+    		if(errors[0] === 'error'){
+    			alert('Não foi possivel Conectar');
+    		}
+		});
+	</script>
 </body>
 </html>

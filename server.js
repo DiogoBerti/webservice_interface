@@ -4,7 +4,7 @@ const fs = require('fs');
 const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
-const Odoo = require('odoo-xmlrpc');
+const Odoo = require('./odoo_call');
 
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
@@ -25,7 +25,7 @@ app.post('/login/submit', function(req, res){
    console.log(req.body);
    let vals = req.body;
 
-   let odoo = new Odoo({
+   const odoo = new Odoo({
 	    url: `http://${vals.urlOdoo}`,
 	    port: '8069',
 	    db: vals.bdOdoo,
@@ -33,10 +33,10 @@ app.post('/login/submit', function(req, res){
 	    password: vals.userPassword
    });
 
-   odoo.connect(function (err) {
+   odoo.connect((err) => {
+	   	
 	    if (err) { 
-	    	res.redirect('/bad');
-	    	return console.log(err);
+	    	res.redirect('/login?error=notfound');
 	    }
 	    console.log('Connected to Odoo server.');
 
@@ -68,7 +68,6 @@ app.post('/login/submit', function(req, res){
 				});
 	    	});
 	    	// res.redirect('/home',results);
-	    	
 	    });
 	});
 });

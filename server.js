@@ -5,6 +5,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const Odoo = require('./odoo_call');
+const utils = require('./utils');
 
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
@@ -23,8 +24,15 @@ app.get('/login', (req, res) => {
 
 });
 
+app.get('/search', (req, res) => {
+	res.render('search.hbs', {
+		pageTitle: 'Search',
+	});
+
+});
+
 app.post('/login/submit', function(req, res){
-	console.log(req.body);
+	
 	let vals = req.body;
 	let port = '8069';
 	if(vals.check_port){
@@ -34,53 +42,19 @@ app.post('/login/submit', function(req, res){
    		// const port = '8069';
    		console.log('Else');
    	}
-   
+   let login = {
+   		url: vals.urlOdoo,
+   		port: port,
+   		bd: vals.bdOdoo,
+   		userName: vals.userLogin,
+   		password: vals.userPassword,
+   		req: req,
+   		res: res
+   }
+   console.log(login);
 
-   const odoo = new Odoo({
-	    url: `http://${vals.urlOdoo}`,
-	    port: port,
-	    db: vals.bdOdoo,
-	    username: vals.userLogin,
-	    password: vals.userPassword
-   });
-
-   odoo.connect((err) => {
-	   	
-	    if (err) { 
-	    	res.redirect('/login?error=notfound');
-	    }
-	    console.log('Connected to Odoo server.');
-
-	    let inParams = [];
-
-	    inParams.push([]);
-	    // inParams.push(0);  //offset
-	    // inParams.push(10);  //Limit
-	    let params = [];
-	    params.push(inParams);
-	    odoo.execute_kw('res.users', 'search', params, function (err, value) {
-	        
-	        if (err) { 
-	        	return console.log(err);
-	        }
-	        let inParams = [];
-	        inParams.push(value); //ids
-	        inParams.push(['name', 'login']); //fields
-	        let params = [];
-	        params.push(inParams);
-	        odoo.execute_kw('res.users', 'read', params, function (err2, value2) {
-	            if (err2) { 
-	            	return console.log(err2);
-	            }
-	            let results = value2;
-	            res.render('home.hbs',{
-				welcomeMessage: "Bem vindo ao Webservice interface",
-				results_to_show: results
-				});
-	    	});
-	    	// res.redirect('/home',results);
-	    });
-	});
+   utils.odooConnection(login);
+ 
 });
 
 
@@ -96,9 +70,13 @@ app.get('/bad', (req, res) => {
 	})
 });
 
-
-
 // O Segundo argumento do Listen é opcional...
 app.listen(port, () =>{
 	console.log(`Server is running on port ${port}`);
+});
+
+
+// Url Para busca...
+app.post('/search/find', function(req, res){
+	console.log(req.body);
 });

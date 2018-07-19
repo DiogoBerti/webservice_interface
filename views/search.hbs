@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{{> imports}}
+	<title>Search Page</title>
+</head>
+
+<body>
+	{{> header1}}
+	<br/>
+	<div class="main_form">
+		<center><h3>Busca</h3></center>
+	</div>
+
+	<div id="search" class="main_form_small">
+		<form action="/search/find" method="post" >
+			<div class="row">	
+				<div class="col-sm-4">
+					<div class="form-group">
+						<input type="text" name="model_name" class="form-control" placeholder="Nome do Modelo" 
+						required="required">
+					</div>
+				</div>
+				<div class="col-sm-8">
+					<div class="form-group">
+						<input type="text" name="domain_to_search" class="form-control" placeholder="Domínio">
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="form-group">
+						<button type="submit" class="btn btn-success btn-block">Buscar</button>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	{{> footer}}
+</body>
+</html>

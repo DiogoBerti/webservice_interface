@@ -11,33 +11,41 @@
 	{{> header1}}
 	<br/>
 	<!-- Chamando o helper screamIt e passando welcomeMessage como argumento.. -->
-	<p>{{welcomeMessage}}</p>
-
-	<div id="users">
+	<div class="main_form">
+		<center><h3>{{welcomeMessage}}</h3></center>
+	</div>
+	
+	<div class="main_form">
 		<div class="row">
-			
-			{{#each results_to_show}}
+			<div class="col-sm-4">
+				<a href="/search" class="btn btn-success">Busca</a>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="users" class="main_form">
+		<div class="row">
+		{{#each results_to_show}}
 		<!-- <div style="background-color:lightblue">
 			<h3>{{login}}</h3>
 			<p>{{name}}</p>
 		</div>-->
-		<div class="col-sm-4">
-			<div class="card">
-				<div class="card-header">
-					{{login}}
-				</div>
-				<div class="card-body">
-					<h3 class="card-title">Login</h3>
-					<p class="card-subtitle mb-2 text-muted">{{name}}</p>
+			<div class="col-sm-4">
+				<div class="card">
+					<div class="card-header">
+						{{login}}
+					</div>
+					<div class="card-body">
+						<p class="card-subtitle mb-2 text-muted">Nome:</p>
+						<h3 class="card-title">{{name}}</h3>
+					</div>
 				</div>
 			</div>
-		</div>
 		{{/each}}
-
+		</div>
 	</div>
-</div>
-
-<!-- Injetando um partial, definido dentro de views/partials -->
-{{> footer}}
+	<!-- Injetando um partial, definido dentro de views/partials -->
+	{{> footer}}
 </body>
 </html>

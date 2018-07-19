@@ -13,6 +13,8 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 app.use(express.static(__dirname + '/public'));
+app.use('/static', express.static('public'));
+
 
 app.get('/login', (req, res) => {
 	res.render('login.hbs', {
@@ -22,12 +24,21 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login/submit', function(req, res){
-   console.log(req.body);
-   let vals = req.body;
+	console.log(req.body);
+	let vals = req.body;
+	let port = '8069';
+	if(vals.check_port){
+   		port = vals.port;
+   		console.log(port);
+   	}else{
+   		// const port = '8069';
+   		console.log('Else');
+   	}
+   
 
    const odoo = new Odoo({
 	    url: `http://${vals.urlOdoo}`,
-	    port: '8069',
+	    port: port,
 	    db: vals.bdOdoo,
 	    username: vals.userLogin,
 	    password: vals.userPassword

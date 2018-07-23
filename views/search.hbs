@@ -15,15 +15,43 @@
 	<div id="search" class="main_form_small">
 		<form action="/search/find" method="post" >
 			<div class="row">	
-				<div class="col-sm-4">
+				<div class="col-sm-12">
 					<div class="form-group">
 						<input type="text" name="model_name" class="form-control" placeholder="Nome do Modelo" 
 						required="required">
 					</div>
 				</div>
-				<div class="col-sm-8">
+				<div class="col-sm-12">
 					<div class="form-group">
-						<input type="text" name="domain_to_search" class="form-control" placeholder="Domínio">
+						<center><p>Domínio:</p></center>
+						<!-- <label for="field">Field:</label> -->
+						<center>
+							<select class="form-control col-sm-4" id="field" name="field">
+								<option value="name">name</option>
+								<option value="id">id</option>
+							</select>
+						</center>
+						<br/>
+						<!-- <label for="operator">Operador:</label> -->
+						<center>
+							<select class="form-control col-sm-4" id="operator" name="operator">
+								<option value="=">=</option>
+								<option value=">">></option>
+								<option value="<"><</option>
+							</select>
+						</center>
+						<br/>
+						<center>
+							<input type="text" name="domain_to_search" class="form-control col-sm-4" 
+							placeholder="">
+						</center>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="form-group">
+						<br/>
+						<input type="text" name="fields_list" class="form-control" 
+						placeholder="Campos para Retorno">
 					</div>
 				</div>
 				<div class="col-sm-12">

@@ -7,6 +7,7 @@ const port = process.env.PORT || 3000;
 const Odoo = require('./odoo_call');
 const utils = require('./utils');
 
+
 hbs.registerPartials(__dirname + '/views/partials');
 app.set('view engine', 'hbs');
 // Parser do Form...
@@ -21,14 +22,12 @@ app.get('/login', (req, res) => {
 	res.render('login.hbs', {
 		pageTitle: 'Login',
 	});
-
 });
 
 app.get('/search', (req, res) => {
 	res.render('search.hbs', {
 		pageTitle: 'Search',
 	});
-
 });
 
 app.post('/login/submit', function(req, res){
@@ -48,13 +47,12 @@ app.post('/login/submit', function(req, res){
    		bd: vals.bdOdoo,
    		userName: vals.userLogin,
    		password: vals.userPassword,
-   		req: req,
-   		res: res
-   }
-   console.log(login);
+   };
 
+   utils.writeJsonDB(login);
+   login['req'] = req;
+   login['res'] = res;
    utils.odooConnection(login);
- 
 });
 
 
@@ -70,13 +68,34 @@ app.get('/bad', (req, res) => {
 	})
 });
 
+app.post('/search/find', function(req, res){
+	console.log(req.body);
+	let vals = req.body;
+
+	// Checa o Json do login do usuario atual
+	// FIXME: Ajustar para escrever e ler de uma base de dados...
+	utils.getJsonDb()
+	.then((value) =>{
+		// Retorna da Promises, após ler o Json... res é o conteudo do Json
+		let login = value;
+		// Adicionando os valores de vals ao objeto login
+		if (login){
+			for (prop in vals){
+				login[prop] = vals[prop];
+			}
+			login['req'] = req;
+   			login['res'] = res;
+   			console.log("RES!!!");
+   			console.log(res);
+			utils.odooSearch(login);
+		}
+	})
+	.catch((errorMessage) => {
+    	console.log(errorMessage);
+	});
+});
+
 // O Segundo argumento do Listen é opcional...
 app.listen(port, () =>{
 	console.log(`Server is running on port ${port}`);
-});
-
-
-// Url Para busca...
-app.post('/search/find', function(req, res){
-	console.log(req.body);
 });

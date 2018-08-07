@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const port = process.env.PORT || 3000;
 const Odoo = require('./odoo_call');
 const utils = require('./utils');
+var path    = require("path");
 
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -68,6 +69,12 @@ app.get('/bad', (req, res) => {
 	})
 });
 
+app.get('/new', (req, res) =>{
+	res.sendFile(path.join(__dirname+'/views/angular.html'));
+});
+
+
+
 app.post('/search/find', function(req, res){
 	console.log(req.body);
 	let vals = req.body;
@@ -93,6 +100,11 @@ app.post('/search/find', function(req, res){
 	.catch((errorMessage) => {
     	console.log(errorMessage);
 	});
+});
+
+app.get('/objtest', (req,res) => {
+	console.log('Bateu')
+	res.json({test: 'Um belo teste'})
 });
 
 // O Segundo argumento do Listen é opcional...
